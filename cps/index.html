@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>クリック速度測定</title>
+    <meta name="description" content="クリック数とcps速度を測定します。" />
+    <meta property="og:title" content="クリック速度測定サイト | @kinoko1216" />
+    <meta property="og:description" content="クリック数とcps速度を測定できます。" />
+</head>
+<body>
+    <style>
+    /*
+    font-family: 'Darumadrop One', cursive;
+
+    font-family: 'Kiwi Maru', serif;
+    */
+    
+    @import url('https://fonts.googleapis.com/css2?family=Darumadrop+One&family=Kiwi+Maru&display=swap'); 
+    
+    body {
+      text-align: center;
+      font-family: Arial, sans-serif;
+      background-color: #F3F5F8;
+    }
+    
+    h1 {
+      color: #FF69B4;
+      font-family: 'Darumadrop One', cursive;
+    }
+    
+    p {
+      color: #777;
+      font-family: 'Kiwi Maru', serif;
+    }
+    
+    .button {
+      display: inline-block;
+      padding: 10px 20px;
+      font-size: 18px;
+      font-weight: bold;
+      text-decoration: none;
+      background-color: #FFC0CB;
+      color: #fff;
+      border-radius: 8px;
+      transition: background-color 0.3s ease;
+    }
+    
+    .button:hover {
+      background-color: #FF1493;
+    }
+    
+    #counter {
+      font-size: 48px;
+      color: #FF69B4;
+      margin-top: 20px;
+    }
+
+    #record {
+      color: #777;
+      font-size: 16px;
+      margin-top: 10px;
+    }
+    </style>
+  <h1>クリック速度測定</h1>
+  <p>10秒間に何回クリックできるか測定します。</p>
+  
+  <select id="timeSelect">
+    <option value="1">1秒</option>
+    <option value="3">3秒</option>
+    <option value="5">5秒</option>
+    <option value="10">10秒</option>
+    <option value="15">15秒</option>
+    <option value="20">20秒</option>
+  </select>
+
+  <button onclick="startMeasure()">計測開始</button>
+  <p id="count">0</p>
+  <p id="record"></p>
+  
+  <script>
+    var clickCount = 0;
+    var startTime, endTime;
+    var button = document.querySelector('button');
+    var counter = document.querySelector('#count');
+    var timeSelect = document.querySelector('#timeSelect');
+    var record = document.querySelector('#record');
+    var maxClickRate = 0;
+    var maxClickCount = 0;
+
+    function startMeasure() {
+      button.disabled = true;
+      clickCount = 0;
+      counter.textContent = clickCount;
+      startTime = new Date();
+      document.addEventListener('click', countClick);
+      var selectedTime = parseInt(timeSelect.value);
+      setTimeout(endMeasure, selectedTime * 1000);
+    }
+    
+    function countClick() {
+      clickCount++;
+      counter.textContent = clickCount;
+    }
+    
+    function endMeasure() {
+      endTime = new Date();
+      var elapsedTime = (endTime - startTime) / 1000; // 10秒数に変換 / startTimeだけでいい気がする
+      var clickRate = clickCount / elapsedTime;
+
+      if (clickRate > maxClickRate) {
+        maxClickRate = clickRate;
+        maxClickCount = clickCount;
+        record.textContent = '最高cps数: ' + maxClickRate.toFixed(2) + ' cps / 最高クリック数: ' + maxClickCount;
+        // record.textContent = '最高クリック数: ' + maxClickCount + ' / 最高cps数: ' + maxClickRate.toFixed(2) + ' cps';
+      }
+      
+      alert('計測終了です！\n\nお疲れ様です！\n\nクリック数: ' + clickCount + '\nクリック速度: ' + clickRate.toFixed(2) + ' click'); // 急に頭悪くなるの草
+      button.disabled = false;
+      document.removeEventListener('click', countClick);
+    }
+  </script>
+</body>
+</html>
